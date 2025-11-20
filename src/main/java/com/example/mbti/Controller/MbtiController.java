@@ -1,5 +1,6 @@
 package com.example.mbti.Controller;
 
+import com.example.mbti.DTO.MbtiResponse;
 import com.example.mbti.Entity.Mbti;
 import com.example.mbti.Service.MbtiService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +26,7 @@ public class MbtiController {
     )
     @GetMapping("/all")
     public ResponseEntity<?> getAllMbti() {
-        List<Mbti> mbtiList = mbtiService.getAllMbti();
+        List<MbtiResponse> mbtiList = mbtiService.getAllMbti();
         return ResponseEntity.ok(mbtiList);
     }
 }
