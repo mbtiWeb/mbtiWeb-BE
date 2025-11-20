@@ -19,6 +19,12 @@ public class Question {
     @Column(name="number", nullable=false, unique=true)
     private Integer number;  // 질문 번호
 
+    @Column(name="about_subtype")
+    private Boolean aboutSubtype;  // subtype과 관련된 질문인가?
+
+    @Column(name="type")
+    private String type;  // 어떤 type과 관련된 질문인가?
+
     @Column(name="is_reversed", nullable=false)
     private Boolean isReversed;  // E <-> I
 
