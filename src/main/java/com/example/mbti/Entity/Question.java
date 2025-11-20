@@ -12,8 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Question {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id", nullable=false, unique=true)
     private Long id;  // 자동 생성되는 id( PK )
     
     @Column(name="number", nullable=false, unique=true)

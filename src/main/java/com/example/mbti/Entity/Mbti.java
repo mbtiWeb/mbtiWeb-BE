@@ -26,7 +26,7 @@ public class Mbti {
     private String summary;  // 한 줄 소개
 
     @Lob
-    @Column(name="instruction", nullable=false, columnDefinition="LONGTEXT")
+    @Column(name="instruction", nullable=false)
     private String instruction;  // 설명
 
     @Column(name="img_url", nullable=false, unique=true)
