@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class QuestionResponse {
-    private List<Question> questionList;
+    private List<QuestionResponseItem> questionList;
     private String token;
 }

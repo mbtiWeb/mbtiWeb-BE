@@ -20,7 +20,7 @@ public class Question {
     private Integer number;  // 질문 번호
 
     @Column(name="is_reversed", nullable=false)
-    private Boolean is_reversed;  // E <-> I
+    private Boolean isReversed;  // E <-> I
 
     @Column(name="question", nullable=false, unique=true)
     private String question;  // 질문

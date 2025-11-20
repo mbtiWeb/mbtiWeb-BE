@@ -1,6 +1,7 @@
 package com.example.mbti.Controller;
 
 import com.example.mbti.DTO.QuestionResponse;
+import com.example.mbti.DTO.QuestionResponseItem;
 import com.example.mbti.Entity.Question;
 import com.example.mbti.Service.QuestionService;
 import com.example.mbti.Service.TokenService;
@@ -27,7 +28,7 @@ public class QuestionController {
     )
     @GetMapping("/all")
     public ResponseEntity<?> getAllQuestions() {
-        List<Question> questionList = questionService.getAllQuestions();
+        List<QuestionResponseItem> questionList = questionService.getAllQuestions();
         String token = tokenService.createToken();
 
         return ResponseEntity.ok(new QuestionResponse(questionList, token));
