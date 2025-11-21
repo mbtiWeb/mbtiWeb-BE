@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,5 +28,14 @@ public class QuestionService {
                                    question.getQuestion()
                            ))
                            .collect(Collectors.toList());
+    }
+
+    public Map<Integer, Question> getAllQuestionsAsMap() {
+        List<Question> questionList = questionRepository.findAllByOrderByNumberAsc();
+        return questionList.stream()
+                .collect(Collectors.toMap(
+                        Question::getNumber,      // question -> question.getNumber()와 동일
+                        question -> question,
+                        (existing, replacement) -> existing));
     }
 }
