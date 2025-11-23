@@ -32,6 +32,12 @@ public class QuestionService {
 
     public Map<Integer, Question> getAllQuestionsAsMap() {
         List<Question> questionList = questionRepository.findAllByOrderByNumberAsc();
+
+        // 로드된 질문이 전혀 없을 경우 예외 발생
+        if (questionList.isEmpty()) {
+            throw new NoSuchElementException("테스트 문항 데이터가 데이터베이스에 존재하지 않습니다. DB 연결 및 question 테이블 데이터를 확인하십시오.");
+        }
+
         return questionList.stream()
                 .collect(Collectors.toMap(
                         Question::getNumber,      // question -> question.getNumber()와 동일
