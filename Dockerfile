@@ -1,5 +1,5 @@
 # Java 17이 설치된 가벼운 리눅스 환경에서 시작
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 
 # JAR 파일(Java 실행 파일) 위치 확인하기
 COPY build/libs/*.jar app.jar
