@@ -1,23 +1,12 @@
-# 1) Gradle 빌드 스테이지
-FROM gradle:8.5-jdk17 AS builder
-WORKDIR /app
+# Java 17이 설치된 가벼운 리눅스 환경에서 시작
+FROM openjdk:17-jdk-slim
 
-# 소스 전체 복사
-COPY . .
+# JAR 파일(Java 실행 파일) 위치 확인하기
+COPY build/libs/*.jar app.jar
 
-# 테스트는 제외하고 JAR 빌드
-RUN gradle clean build -x test
+# 컨테이너가 시작하면, 아래 명령을 자동으로 실행
+# 컨테이너: 내가 만든 프로그램만 실행되는 완전 독립된 작은 컴퓨터
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
-
-# 2) 실제 실행 스테이지 (경량 이미지)
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-
-# 빌드된 JAR을 실행 환경으로 복사
-COPY --from=builder /app/build/libs/*.jar app.jar
-
-# Spring Boot 기본 포트
+# 서버 포트 명시
 EXPOSE 8080
-
-# 컨테이너 실행 시 Spring Boot 실행
-ENTRYPOINT ["java", "-jar", "app.jar"]
