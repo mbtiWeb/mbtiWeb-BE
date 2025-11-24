@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = {
+        "*"
+})
 @RestController
 @RequestMapping("/api/question")
 @Tag(name="Question API", description="MBTI 문항 관련 기능")

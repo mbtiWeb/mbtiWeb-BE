@@ -11,6 +11,9 @@ import com.example.mbti.Service.ResultCalcService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+@CrossOrigin(origins = {
+        "*"
+})
 @RequestMapping("/api/mbti")
 @RequiredArgsConstructor
 @RestController
