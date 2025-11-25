@@ -1,5 +1,6 @@
 package com.example.mbti.Service;
 
+import com.example.mbti.DTO.MbtiDetailResponse;
 import com.example.mbti.DTO.MbtiResponse;
 import com.example.mbti.Entity.Mbti;
 import com.example.mbti.Repository.MbtiRepository;
@@ -25,5 +26,13 @@ public class MbtiService {
                                mbti.getType()
                        ))
                        .collect(Collectors.toList());
+    }
+
+    // 이름으로 MBTI를 찾아 DTO로 변환
+    public MbtiDetailResponse getMbtiByName(String type) {
+        String standardizedType = type.toUpperCase();
+        Mbti mbtiEntity = mbtiRepository.findByType(standardizedType)
+                .orElseThrow();
+        return MbtiDetailResponse.of(mbtiEntity);
     }
 }
