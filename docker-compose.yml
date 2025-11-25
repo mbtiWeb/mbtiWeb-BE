@@ -3,5 +3,5 @@ services:
     image: backend
     environment:
       DB_URL: ${DB_URL}
-      DB_USER: ${DB_USER}
+      DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
