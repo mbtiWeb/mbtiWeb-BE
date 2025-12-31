@@ -3,9 +3,7 @@ package com.example.mbti.Service;
 import com.example.mbti.DTO.AnswerRequest;
 import com.example.mbti.DTO.AnswerRequestItem;
 import com.example.mbti.DTO.MbtiResultResponse;
-import com.example.mbti.Entity.Mbti;
 import com.example.mbti.Entity.Question;
-import com.example.mbti.Service.QuestionService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,12 @@ public class ResultCalcService {
         List<AnswerRequestItem> answers = request.getAnswers();
         Map<Integer, Question> questionMap = questionService.getAllQuestionsAsMap();
         // 각각의 type별 점수를 계산한다.
-        Map<String, Integer> scores = new HashMap<>();
+        Map<String, Double> scores = new HashMap<>(Map.of(
+                "I", 0.5,
+                "S", 0.5,
+                "F", 0.5,
+                "P", 0.5
+        ));
 
         for (AnswerRequestItem item : answers) {
             // 질문 번호를 이용해 답변에 해당하는 질문 검색
@@ -45,7 +48,7 @@ public class ResultCalcService {
         );
     }
 
-    public void processAnswer(AnswerRequestItem item, Map<String, Integer> scores, Question question) {
+    public void processAnswer(AnswerRequestItem item, Map<String, Double> scores, Question question) {
         Integer selectedScore = item.getSelectedScore(); // 답변에서 고른 점수
 
         if (question != null) {
@@ -60,24 +63,25 @@ public class ResultCalcService {
             }
 
             // 보정된 점수를 해당 축에 누적
-            int currentTotalScore = scores.getOrDefault(type, 0);
+            double currentTotalScore = scores.getOrDefault(type, 0.0);
             scores.put(type, currentTotalScore + finalScore);
         }
     }
 
-    private String determineMbtiType(Map<String, Integer> scores) {
+    private String determineMbtiType(Map<String, Double> scores) {
         // midpoint : 6문항 * (7점 척도 중 중간값 4점) = 24
         final int MIDPOINT = 24;
 
-        return String.valueOf(scores.getOrDefault("E", 0) > MIDPOINT ? 'E' : 'I') +
-                (scores.getOrDefault("S", 0) > MIDPOINT ? 'S' : 'N') +
-                (scores.getOrDefault("T", 0) > MIDPOINT ? 'T' : 'F') +
-                (scores.getOrDefault("J", 0) > MIDPOINT ? 'J' : 'P');
+        // 모두 중립 선택 시 ISFP
+        return String.valueOf(scores.getOrDefault("E", 0.0) > MIDPOINT ? 'E' : 'I') +
+                (scores.getOrDefault("S", 0.0) > MIDPOINT ? 'S' : 'N') +
+                (scores.getOrDefault("T", 0.0) > MIDPOINT ? 'T' : 'F') +
+                (scores.getOrDefault("J", 0.0) > MIDPOINT ? 'J' : 'P');
     }
 
-    private List<String> determineSubtype(Map<String, Integer> scores) {
+    private List<String> determineSubtype(Map<String, Double> scores) {
         List<String> mainTypes = List.of("E", "S", "T", "J");
-        List<Map.Entry<String, Integer>> subtypeEntries = scores.entrySet().stream()
+        List<Map.Entry<String, Double>> subtypeEntries = scores.entrySet().stream()
                 .filter(entry -> !mainTypes.contains(entry.getKey()))
                 .toList();
 
@@ -86,8 +90,8 @@ public class ResultCalcService {
             return List.of();
         }
 
-        int maxScore = subtypeEntries.stream()
-                .mapToInt(Map.Entry::getValue)
+        double maxScore = subtypeEntries.stream()
+                .mapToDouble(Map.Entry::getValue)
                 .max()
                 .orElse(Integer.MIN_VALUE);
 
