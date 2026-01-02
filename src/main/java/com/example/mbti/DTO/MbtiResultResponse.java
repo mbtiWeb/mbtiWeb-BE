@@ -6,14 +6,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.example.mbti.Entity.Mbti;
-
 @Getter
 @RequiredArgsConstructor
 public class MbtiResultResponse {
     private final String mbti; // mbti
     private final List<String> subtype; // subtype
-    private final Map<String, Integer> scores; // EI, NS, TF, PJ, subtype 점수
-    private final LocalDateTime timestamp = LocalDateTime.now();; // 타임스탬프 -> 로그 관리에 용이
+    private final Map<String, Double> scores; // EI, NS, TF, PJ, subtype 점수
+    private final LocalDateTime timestamp = LocalDateTime.now(); // 타임스탬프 -> 로그 관리에 용이
     private final String token; // 토큰도 함께 전송
 }
