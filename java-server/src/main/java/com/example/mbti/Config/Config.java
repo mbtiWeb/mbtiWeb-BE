@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        servers = {c
+        servers = {
                 @Server(
                         url = "https://mbti-api-java.soyyoda.com",
                         description = "Production Server (HTTPS)"
