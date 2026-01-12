@@ -22,13 +22,7 @@ public class ResultCalcService {
         String token = request.getToken();
         List<AnswerRequestItem> answers = request.getAnswers();
         Map<Integer, Question> questionMap = questionService.getAllQuestionsAsMap();
-        // 각각의 type별 점수를 계산한다.
-        Map<String, Double> scores = new HashMap<>(Map.of(
-                "E", -0.5,
-                "S", 0.5,
-                "T", -0.5,
-                "J", -0.5
-        ));
+        Map<String, Double> scores = new HashMap<>();
 
         for (AnswerRequestItem item : answers) {
             // 질문 번호를 이용해 답변에 해당하는 질문 검색
@@ -70,11 +64,11 @@ public class ResultCalcService {
 
     private String determineMbtiType(Map<String, Double> scores) {
         // midpoint : 5문항 * (7점 척도 중 중간값 4점) = 20
-        final int MIDPOINT = 20;
+        final double MIDPOINT = 20;
 
         // 모두 중립 선택 시 ISFP
         return String.valueOf(scores.getOrDefault("E", 0.0) > MIDPOINT ? 'E' : 'I') +
-                (scores.getOrDefault("S", 0.0) > MIDPOINT ? 'S' : 'N') +
+                (scores.getOrDefault("S", 0.0) >= MIDPOINT ? 'S' : 'N') +
                 (scores.getOrDefault("T", 0.0) > MIDPOINT ? 'T' : 'F') +
                 (scores.getOrDefault("J", 0.0) > MIDPOINT ? 'J' : 'P');
     }
