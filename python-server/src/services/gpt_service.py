@@ -6,7 +6,8 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 
 load_dotenv()
-OPENAI_API = os.getenv("OPENAI_API")
+# OPENAI_API = os.getenv("OPENAI_API")
+OLLAMA_API = os.getenv("OLLAMA_API")
 
 # LLM 출력 데이터 구조 정의
 class MBTISummaryOutput(BaseModel):
@@ -20,8 +21,9 @@ class MBTISummaryOutput(BaseModel):
 class GPTService:
     def __init__(self):
         self.llm = ChatOpenAI(
-            model="gpt-4o-mini",
-            api_key=OPENAI_API,
+            model="gpt-oss:120b-cloud",
+            api_key=OLLAMA_API,
+            base_url="https://ollama.com/v1/",
             temperature=0.7,
         )
 
