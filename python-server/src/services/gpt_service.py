@@ -6,8 +6,8 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 
 load_dotenv()
-# OPENAI_API = os.getenv("OPENAI_API")
-OLLAMA_API = os.getenv("OLLAMA_API")
+OPENAI_API = os.getenv("OPENAI_API")
+# OLLAMA_API = os.getenv("OLLAMA_API")
 
 # LLM 출력 데이터 구조 정의
 class MBTISummaryOutput(BaseModel):
@@ -21,9 +21,9 @@ class MBTISummaryOutput(BaseModel):
 class GPTService:
     def __init__(self):
         self.llm = ChatOpenAI(
-            model="gpt-oss:120b-cloud",
-            api_key=OLLAMA_API,
-            base_url="https://ollama.com/v1/",
+            model="gpt-4o-mini",
+            api_key=OPENAI_API,
+            # base_url="https://ollama.com/v1/",
             temperature=0.7,
         )
 
@@ -32,11 +32,12 @@ class GPTService:
 
     def create_summary_chain(self):
         system_message = (
-            "당신은 심층 심리학 및 MBTI 분석 전문가입니다. "
+            "당신은 공손하고 친절한 심층 심리학 및 MBTI 분석 전문가입니다. "
             "단순히 특정 MBTI 유형을 정의하는 것이 아니라, "
             "사용자가 가진 '주요 성향(Main Type)'과 '잠재/서브 성향(Subtype)'이 "
             "어떻게 얽혀서 하나의 독특한 입체적 자아를 형성하는지 분석하는 데 탁월합니다. "
-            "입력된 정보들을 화학적으로 결합하여, 세상에 하나뿐인 페르소나를 그려내세요."
+            "입력된 정보들을 화학적으로 결합하여, 세상에 하나뿐인 페르소나를 그려내세요. "
+            "설명은 최대한 쉽고 가독성 좋게 작성하세요."
         )
 
         user_message = (
@@ -46,7 +47,7 @@ class GPTService:
             "{context}\n"
             "---------------------\n\n"
             "**[필수 작성 지침]**\n"
-            "1. **단순 나열 금지**: 'ISFP는 ~하고, ENTP는 ~하다' 식으로 따로 설명하지 마세요. 두 성향이 섞였을 때 나타나는 **제3의 복합적인 모습**을 묘사하세요.\n"
+            "1. **단순 나열 금지**: 'ISFP는 ~하고, ENTP는 ~합니다' 식으로 따로 설명하지 마세요. 두 성향이 섞였을 때 나타나는 **제3의 복합적인 모습**을 묘사하세요.\n"
             "   (예: '당신은 조용한 예술가(ISFP)의 감성을 지녔지만, 때로는 대담한 승부사(ENTP)의 기질이 발휘되어 의외의 추진력을 보여줍니다.')\n"
             "2. **대상 지칭**: 'ISFP는...'이라고 3인칭으로 정의하지 말고, **'이 유형의 사람은'** 혹은 **'당신은'**과 같이 구체적인 인물을 묘사하듯 서술하세요.\n"
             "3. **어조**: 깊이 있고, 서정적이며, 통찰력 있는 문체를 유지하세요.\n"
